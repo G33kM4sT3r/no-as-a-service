@@ -6,6 +6,9 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path/filepath"
+	"slices"
+	"strings"
 	"sync"
 
 	"no-as-a-service/internal/helper"
@@ -16,8 +19,10 @@ import (
 
 // reasonCache stores loaded reasons per language to avoid repeated file reads
 var (
-	reasonCache = make(map[string][]string)
-	cacheMutex  sync.RWMutex
+	reasonCache        = make(map[string][]string)
+	cacheMutex         sync.RWMutex
+	availableLanguages []string
+	langMutex          sync.Once
 )
 
 func Reason(ctx *gin.Context) {
@@ -25,13 +30,16 @@ func Reason(ctx *gin.Context) {
 	defaultLanguage := helper.GetEnv("DEFAULT_LANGUAGE", "en")
 	lang := ctx.DefaultQuery("lang", defaultLanguage)
 
+	// Get available languages from data directory
+	languages := getAvailableLanguages()
+
 	// Validate language parameter
-	if lang != "en" && lang != "de" {
+	if !isLanguageSupported(lang, languages) {
 		ctx.JSON(http.StatusBadRequest, response.DefaultResponse{
 			Payload: nil,
 			Status: response.StatusResponse{
 				Status:  http.StatusBadRequest,
-				Message: "Invalid language. Supported: en, de",
+				Message: fmt.Sprintf("Invalid language. Supported: %s", strings.Join(languages, ", ")),
 				Code:    "RE_400_INVALID_LANGUAGE",
 			},
 		})
@@ -95,4 +103,30 @@ func loadReasons(lang string) ([]string, error) {
 	cacheMutex.Unlock()
 
 	return reasons, nil
+}
+
+// getAvailableLanguages scans the data directory for available language files
+func getAvailableLanguages() []string {
+	langMutex.Do(func() {
+		files, err := filepath.Glob("data/reasons.*.json")
+		if err != nil {
+			return
+		}
+
+		for _, file := range files {
+			// Extract language code from filename (e.g., "data/reasons.de.json" -> "de")
+			base := filepath.Base(file)
+			parts := strings.Split(base, ".")
+			if len(parts) == 3 {
+				availableLanguages = append(availableLanguages, parts[1])
+			}
+		}
+	})
+
+	return availableLanguages
+}
+
+// isLanguageSupported checks if the given language is in the list of available languages
+func isLanguageSupported(lang string, languages []string) bool {
+	return slices.Contains(languages, lang)
 }
