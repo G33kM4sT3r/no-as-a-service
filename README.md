@@ -1,8 +1,11 @@
 # No-as-a-Service
 
-A lightweight REST API that returns random, creative rejection reasons. Perfect for when you need a polite (or witty) way to say "no".
+> A lightweight REST API that returns random, creative rejection reasons. Perfect for when you need a polite (or witty) way to say "no".
 
-Built with Go and Gin framework.
+[![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)](https://golang.org)
+[![Gin](https://img.shields.io/badge/Gin-1.11-00ADD8?logo=go&logoColor=white)](https://gin-gonic.com)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 
 Mainly inspired by https://github.com/hotheadhacker/no-as-a-service
 
