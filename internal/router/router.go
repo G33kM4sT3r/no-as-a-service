@@ -9,4 +9,6 @@ import (
 func Setup(engine *gin.Engine) {
 	engine.GET("/healthcheck", handler.Healthcheck)
 	engine.GET("/reason", handler.Reason)
+
+	engine.NoRoute(handler.NotFound)
 }
