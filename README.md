@@ -2,9 +2,10 @@
 
 > A lightweight REST API that returns random, creative rejection reasons. Perfect for when you need a polite (or witty) way to say "no".
 
-[![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)](https://golang.org)
+[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://golang.org)
 [![Gin](https://img.shields.io/badge/Gin-1.11-00ADD8?logo=go&logoColor=white)](https://gin-gonic.com)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/martin.willig)
 
 
 Mainly inspired by https://github.com/hotheadhacker/no-as-a-service
